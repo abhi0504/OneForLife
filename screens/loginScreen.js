@@ -13,82 +13,111 @@ import {
 import { TouchableOpacity } from 'react-native';
 
 const windowWidth = Dimensions.get('window').width;
+let valid = true;
 const windowHeight = Dimensions.get('window').height;
 
-const LoginScreen = () => {
+const LoginScreen = (props) => {
 
 const [text, onChangeText] = useState("");
 const [number, onChangeNumber] = useState("");
 const [message, setMessage] = useState("")
-const [valid, setValid] = useState(true)
+const [message2, setMessage2] = useState("")
+// const [valid, setValid] = useState(true)
 
-useEffect(() => {
-    // console.log(text);
-    // console.log(number);
-    console.log(valid);
-  }, []);
+// useEffect(() => {
+//     // console.log(text);
+//     // console.log(number);
+//     console.log(valid);
+//   }, []);
 
-  useEffect(() => {
-    // console.log(text);
-    console.log(message);
-    console.log(valid);
-  }, [message]);
+//   useEffect(() => {
+//     // console.log(text);
+//     console.log(message);
+//     console.log(valid);
+//   }, []);
 
   const checkValidation = () => {
 
     if( /[A-Z]/.test(text) )
     {
-        setValid(false);
-        setMessage("username must contains lowercase letters only")
+        // setValid(false)
+        valid = false;
+        setMessage2("username should contains lowercase letters only")
     }
 
-    if( ! /^[0-9]+$/.test(number) )
+    if( /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/.test(text) )
     {
-        setValid(false);
-        setMessage("password must contains alpha-numeric values")
+      // setValid(false)
+      valid = false;
+      setMessage2("username should not contain any special charachter")
     }
 
-    if( ! /^[a-z]+$/.test(number) )
+    if( text.length < 5 )
     {
-        setValid(false);
-        setMessage("password must contains alpha-numeric values")
+        // setValid(false)
+        valid = false;
+        setMessage2("username should contains atleast 5 charachters")
     }
 
-    if( number.size < 8 )
+    
+    if( ! /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/.test(number) )
     {
-        setValid(false);
+      // setValid(false)
+      valid = false;
+      setMessage("password must contains a special charachter")
+    }
+    
+    if( number.length < 8 )
+    {
+        // setValid(false)
+        valid = false;
         setMessage("password should contains atleast 8 charachters")
     }
 
-    if( ! /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/.test(number) )
-    {
-        setValid(false);
-        setMessage("password must contains a special charachter")
-    }
-
+    if(valid === true)
+     {
+       props.navigation.push("Dashboard" , {username : text})
+     }
+     else
+     {
+       console.log("error")
+     }
   }
 
     return (
         <View style={styles.container}>
                 <View style={styles.container2} >
                  <Text style={{marginBottom: -10}}>Enter Username</Text>
+
                 <TextInput
                    style={styles.input}
-                   onChangeText={onChangeText}
+                   onChangeText={(val) => {
+                    onChangeText(val);
+                   }}
                    placeholder="username"
                    value={text}
                  />
-                 <Text style={{marginBottom: -10}}>Enter Password</Text>
+
+                 {message2.length > 0 ? <Text style={{marginBottom: 25 , color: "red"}}>{message2}</Text> : <View />}
+                  
+
+                 <Text style={{}}>Enter Password</Text>
                  <TextInput
                    style={styles.input}
-                   onChangeText={onChangeNumber}
+                   onChangeText={(val) => {
+                    onChangeNumber(val)
+                   }}
                    value={number}
+                   secureTextEntry={true}
                    placeholder="password"
                  />
+                 <Text style={{color: "red"}}>{message}</Text>
 
                 <TouchableOpacity onPress={() => {
                     setMessage("");
-                    setValid(true);
+                    setMessage2("");
+                    // setValid(true)
+                    valid = true;
                     checkValidation();
                 }}>
                  <View style={styles.button}> 
@@ -107,14 +136,14 @@ useEffect(() => {
         flex: 1,
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: "#ece2e1"
+        backgroundColor: "#fffbdf"
       },
       container2: {
         width: windowWidth/1.2,
-        height: windowHeight/2.8,
+        height: windowHeight/2.2,
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: "#ffee93",
+        backgroundColor: "#f4eee8",
         borderRadius: 25
       },
       input: {
@@ -123,7 +152,7 @@ useEffect(() => {
         margin: 18,
         borderRadius:8,
         borderWidth: 1,
-        textAlign: "center"
+        textAlign: "center",
       },
       button: {
         backgroundColor: "green",

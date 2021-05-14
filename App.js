@@ -1,5 +1,8 @@
 import React from 'react';
+import 'react-native-gesture-handler';
 import { View } from 'react-native';
+import { createAppContainer } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation-stack';
 import {
   SafeAreaView,
   ScrollView,
@@ -7,15 +10,22 @@ import {
   Text
 } from 'react-native';
 import LoginScreen from "./screens/loginScreen"
+import DashboardScreen from "./screens/DasboardScreen"
 
 const App = () => {
-  return (
-      <LoginScreen />
-  );
+  return <AppContainer /> ;
 };
 
-const styles = StyleSheet.create({
-  
+const AppNavigator = createStackNavigator({
+  Login: {
+    screen: LoginScreen,
+  },
+  Dashboard: {
+    screen: DashboardScreen,
+  },
 });
+
+const AppContainer = createAppContainer(AppNavigator);
+
 
 export default App;
