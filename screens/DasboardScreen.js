@@ -26,6 +26,9 @@ const DashboardScreen = (props) => {
     useEffect(() => {
         fetchMovies();
         // console.log("Hello world");
+        console.log(name);
+        console.log(actor);
+        console.log(key);
     }, [])
 
     const addMovie = async (name , hero) => {    
@@ -45,6 +48,10 @@ const DashboardScreen = (props) => {
         })
 
         const data = await response.json();
+
+        setName("")
+        setActor("")
+        setKey("")
 
         setIsLoading(false)
         // console.log(data);
@@ -105,6 +112,7 @@ const DashboardScreen = (props) => {
         setName("")
         setActor("")
         setKey("")
+        setEditable(false)
         // console.log(data);
     }
 
@@ -230,7 +238,7 @@ const DashboardScreen = (props) => {
                         />
                     </View>
 
-                    {/* {name.length > 0 && actor.length > 0 ? ( editable ? 
+                    {name.length > 0 && actor.length > 0 ? ( editable ? 
                         <TouchableOpacity style={{alignItems: "center" , marginTop: 40}} onPress={() => {
                             // submitHandler();
                             updateMovies(name , actor ,  key);
@@ -252,7 +260,7 @@ const DashboardScreen = (props) => {
                           </TouchableOpacity> )
                           : 
                           <View /> 
-                    } */}
+                    }
 
             
 
